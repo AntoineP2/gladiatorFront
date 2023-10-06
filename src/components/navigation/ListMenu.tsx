@@ -52,6 +52,16 @@ export default function ListMenu(props: ChildComponentProps) {
             </ListItemButton>
           </ListItem>
         </Link>
+        <Link href={"/arenaback"}>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary="Arena Back" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
       </List>
     </Box>
   );
