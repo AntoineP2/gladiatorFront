@@ -17,6 +17,8 @@ const joueur2: Player = new Player("Antoine Pado", 1250, 300, 60);
 let joueur1StackSpeed: number = 0;
 let joueur2StackSpeed: number = 0;
 
+
+
 export default function page() {
   // --------------------Variable State--------------------
 
@@ -27,6 +29,7 @@ export default function page() {
   const [turnToPlayJoueur2, setTurnToPlayJoueur2] = React.useState(false); // Si c'est au joueur2 de jouer alors la valeur est true
 
   const [history, setHistory] = React.useState(["Début du combat"]);
+
 
   // ------------------------Fonction--------------------------
 
@@ -76,9 +79,9 @@ export default function page() {
       setFightState(false);
     }
   };
+
+  // Fonction qui déclanche l'action de combat 'Attaquer'
   const handleClickDammage = () => {
-    if (turnToPlayJoueur1) console.log(joueur1.getName() + " Attaque");
-    if (turnToPlayJoueur2) console.log(joueur2.getName() + " Attaque");
     if (turnToPlayJoueur1) {
       oneTurn(joueur1, joueur2);
       setTurnToPlayJoueur1(false);
@@ -90,11 +93,20 @@ export default function page() {
   };
  // On lance le combat
   const handleClickStartFight = () => {
-   
     battleSpeed();
     setStartFightState(true);
   };
 
+  // -------------------- Variable de composant --------------------
+
+  const buttonPlayer = <Button onClick={handleClickDammage} variant="outlined" fullWidth> {joueur1.getName() + " : Attaque"} </Button>
+  const buttonIA = <Button onClick={handleClickDammage} variant="outlined" fullWidth> {joueur2.getName() + " prépare son action"} </Button>
+  
+  const buttonStart = <Button onClick={handleClickStartFight} variant="outlined" fullWidth color="success"> DEBUT DU COMBAT </Button>
+  const buttonEnd =<Button variant="outlined" fullWidth color="error"> FIN DU COMBAT</Button>
+
+
+  // -------------------- Render --------------------
   return (
     <div>
       <Grid container justifyContent="space-between" alignItems="center">
@@ -107,28 +119,11 @@ export default function page() {
           <GladiatorSheet player={joueur1} />
         </Grid>
         <Grid item xs={4}>
-          {fightState && startFightState ? (
-            <Button onClick={handleClickDammage} variant="outlined" fullWidth>
-              {turnToPlayJoueur1
-                ? joueur1.getName() + " : Attaque"
-                : joueur2.getName() + " : Attaque"}
-            </Button>
-          ) : fightState && !startFightState ? (
-            <Button
-              onClick={handleClickStartFight}
-              variant="outlined"
-              fullWidth
-              color="success"
-            >
-              {" "}
-              DEBUT DU COMBAT{" "}
-            </Button>
-          ) : (
-            <Button variant="outlined" fullWidth color="error">
-              {" "}
-              FIN DU COMBAT{" "}
-            </Button>
-          )}
+          {fightState && startFightState ? turnToPlayJoueur1
+            ? buttonPlayer
+            : buttonIA
+            : fightState && !startFightState ?
+              buttonStart : buttonEnd}
         </Grid>
         <Grid item xs={4} className="flex justify-end">
           <GladiatorSheet player={joueur2} />
