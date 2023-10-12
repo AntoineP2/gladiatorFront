@@ -7,6 +7,7 @@ import Player from "../../class/Player";
 import HistorySheet from "@/components/arena/HistorySheet";
 import { getRandomInt } from "@/utils/utils";
 import { AttackType } from "@/utils/type";
+import * as battleFunction from "../../utils/battle/battleFunctions";
 
 // ------- TYPE -----
 
@@ -61,39 +62,12 @@ export default function page() {
     }
   };
 
-  // On set le commentaire pour les coups, Critiques ou non
-  const setHistoryCrit = (
-    joueurAtk: Player,
-    joueurDef: Player,
-    dammage: AttackType
-  ) => {
-    if (dammage.critical) {
-      setHistory([
-        ...history,
-        " COUP CRITIQUE ! " +
-          joueurAtk.getName() +
-          " inflige " +
-          dammage.dammage +
-          " dégats à " +
-          joueurDef.getName(),
-      ]);
-    } else {
-      setHistory([
-        ...history,
-        joueurAtk.getName() +
-          " inflige " +
-          dammage.dammage +
-          " dégats à " +
-          joueurDef.getName(),
-      ]);
-    }
-  };
 
-  // Fonction pour un tour de combat
+  // Fonction qui gère un tour de combat
   const oneTurn = (joueurAtk: Player, joueurDef: Player) => {
     let dammage: AttackType = joueurAtk.classicAttack();
     joueurDef.getDammage(dammage.dammage);
-    setHistoryCrit(joueurAtk, joueurDef, dammage);
+    setHistory([...history, battleFunction.setHistoryCrit(joueurAtk, joueurDef, dammage)]); // Si dommage critique
     if (joueurDef.getHp() <= 0) {
       setHistory([
         ...history,
@@ -114,9 +88,9 @@ export default function page() {
     }
     battleSpeed();
   };
-
+ // On lance le combat
   const handleClickStartFight = () => {
-    // On lance le combat
+   
     battleSpeed();
     setStartFightState(true);
   };

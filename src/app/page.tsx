@@ -33,6 +33,7 @@ export default function Home() {
   //   setLoading(false);
   // }, []);
 
+  const name = "Antoine"
   // ---- RENDER ------
   return (
     <main>
@@ -44,7 +45,7 @@ export default function Home() {
           ))}
         </div>
       )} */}
-      <p>Home</p>
+      <p>Home {name}</p>
     </main>
   );
 }
